@@ -1,14 +1,20 @@
-.PHONY: help
+.PHONY: help setup build clean
 
 help:
 	@cat $(firstword $(MAKEFILE_LIST))
 
-setup: dependency/wkusnierczyk/make
+setup: dependency/mirror/make
 
-dependency/wkusnierczyk/make: | dependency/wkusnierczyk
-	git clone https://github.com/wkusnierczyk/make.git $@
+build: | /var/lib/mirror/make
+	cd $| && ./bootstrap
+	cd $| && ./configure
+	make -C $| CLFAGS+=-g
+	# make -C $| install
 
-dependency/wkusnierczyk: dependency
+dependency/mirror/make: | dependency/mirror
+	git clone https://github.com/mirror/make.git $@
+
+dependency/mirror: dependency
 	-mkdir $@
 
 dependency:
